@@ -23,19 +23,20 @@ class BaseAgent:
         self.role = role
         self.all_players = all_players
         self.role_message = ''
+        self.role2player = role2player
 
         # Generate role-specific message based on the player's role
-        self._generate_role_message(role2player)
+        self._generate_role_message()
 
-    def _generate_role_message(self, role2player):
+    def _generate_role_message(self):
         """Helper method to generate the appropriate role message."""
         if self.role == '莫甘娜':
-            self.role_message = generate_morgana_role_prompt(assassin=role2player['刺客'])
+            self.role_message = generate_morgana_role_prompt(assassin=self.role2player['刺客'])
         elif self.role == '梅林':
             self.role_message = generate_merlin_role_prompt(
-                loyal1=role2player['忠臣1'], loyal2=role2player['忠臣2'],
-                percival=role2player['派西维尔'], assassin=role2player['刺客'],
-                morgana=role2player['莫甘娜'], oberon=role2player['奥伯伦']
+                loyal1=self.role2player['忠臣1'], loyal2=self.role2player['忠臣2'],
+                percival=self.role2player['派西维尔'], assassin=self.role2player['刺客'],
+                morgana=self.role2player['莫甘娜'], oberon=self.role2player['奥伯伦']
             )
         elif '忠臣' in self.role:
             self.role_message = generate_loyal_servant_prompt()
@@ -43,10 +44,10 @@ class BaseAgent:
             self.role_message = generate_oberon_role_prompt()
         elif self.role == '派西维尔':
             self.role_message = generate_percival_role_prompt(
-                merlin=role2player['梅林'], morgana=role2player['莫甘娜']
+                merlin=self.role2player['梅林'], morgana=self.role2player['莫甘娜']
             )
         elif self.role == '刺客':
-            self.role_message = generate_assassin_role_prompt(morgana=role2player['莫甘娜'])
+            self.role_message = generate_assassin_role_prompt(morgana=self.role2player['莫甘娜'])
 
     def propose_team(self, players, history, round_number):
         """Propose a team based on game history and rules."""

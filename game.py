@@ -119,6 +119,8 @@ class AvalonGame:
         while not self.game_over:
             self.play_round()
 
+        for player in self.players:
+            self.log(f"{player} 的角色是 {self.agents[player].role}")
         # Game has ended, log the results
         self.log(f"----- 游戏结束 -----\n")
 
